@@ -1,0 +1,4 @@
+plan_id,plan_name,monthly_price,annual_discount
+PLAN001,Starter,29.0,0.15
+PLAN002,Professional,79.0,0.15
+PLAN003,Enterprise,199.0,0.15
