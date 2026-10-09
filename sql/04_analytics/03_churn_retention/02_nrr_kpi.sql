@@ -1,0 +1,56 @@
+-- ============================================================
+-- CloudPulse CRM
+-- Analytics Layer: Net Revenue Retention (NRR)
+-- Grain: 1 row = 1 month
+-- ============================================================
+
+SELECT
+    month_end,
+
+    ROUND(
+        SUM(beginning_mrr),
+        2
+    ) AS beginning_mrr,
+
+    ROUND(
+        SUM(expansion_mrr),
+        2
+    ) AS expansion_mrr,
+
+    ROUND(
+        SUM(contraction_mrr),
+        2
+    ) AS contraction_mrr,
+
+    ROUND(
+        SUM(churned_mrr),
+        2
+    ) AS churned_mrr,
+
+    ROUND(
+        (
+            SUM(beginning_mrr)
+            + SUM(expansion_mrr)
+            - SUM(contraction_mrr)
+            - SUM(churned_mrr)
+        ),
+        2
+    ) AS retained_mrr,
+
+    ROUND(
+        (
+            SUM(beginning_mrr)
+            + SUM(expansion_mrr)
+            - SUM(contraction_mrr)
+            - SUM(churned_mrr)
+        )
+        / NULLIF(SUM(beginning_mrr), 0)
+        * 100,
+        2
+    ) AS nrr_pct
+
+FROM monthly_retention
+
+GROUP BY month_end
+
+ORDER BY month_end;
